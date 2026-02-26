@@ -44,8 +44,7 @@ int main()
   float *y0 = new float[N];
 
   const double h=.1;
-  const double eps=1e-12;
-  const int n_steps = std::floor(1/h+eps);
+  const int n_steps = std::floor(1/h);
 
 
   // Initialize init conditions
