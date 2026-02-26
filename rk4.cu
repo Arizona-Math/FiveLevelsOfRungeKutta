@@ -45,7 +45,7 @@ static void check_cuda(cudaError_t e, const char* msg)
 
 int main()
 {
-  const uint32_t N = 1000000;	// Number of initial conditions
+  const uint32_t N = 10000000;	// Number of initial conditions (ten million)
 
   float y[N], y0[N];		// Memory on host
 
