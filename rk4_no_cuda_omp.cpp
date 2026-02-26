@@ -43,7 +43,7 @@ int main()
   float *y = new float[N];
   float *y0 = new float[N];
 
-  const double h=.1;
+  const float h=.1;
   const int n_steps = std::floor(1/h);
 
 
