@@ -20,7 +20,9 @@ void apply_rk4(t_y* state, uint32_t dim)
   const double h=.1;
 
   if (i >= dim) return;
-  state[i].second = rk4_step(state[i].first, state[i].second);
+
+
+  state[i].second += h*(state[i].first + state[i].second);
   state[i].first += h;
 }
 
