@@ -6,7 +6,8 @@
 
 typedef std::pair<double, double> t_y;
 
-__device__ float f(float t, float y) {
+__device__
+float f(float t, float y) {
     return t + y;		// Example ODE: dy/dt = -2y
 }
 
@@ -17,7 +18,8 @@ float y_exact(float t, float y0) {
 }
 
 
-__global__ void rk4_kernel(float* y_results, float* initial_conditions, float h, int steps, int N) {
+__global__
+void rk4_kernel(float* y_results, float* initial_conditions, float h, int steps, int N) {
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
     if (idx < N) {
         float y = initial_conditions[idx];
@@ -85,8 +87,9 @@ int main()
   // Copy back a few entries to sanity-check
   check_cuda(cudaMemcpy(y, y_results, N*sizeof(float), cudaMemcpyDeviceToHost), "copy to host");
 
-  for(uint32_t i=0; i < 10; ++i) {
-    printf("i=%d, y0=%g, yi=%g, yi_exact=%g\n", i, y0[i], y[i], y_exact(1, y0[i]));
+  for(uint32_t i=0; i < 100; ++i) {
+    printf("i=%d, y0=%g, yi=%g, yi_exact=%g, err=%g\n",
+	   i, y0[i], y[i], y_exact(1, y0[i]), y_exact(1,y0[i]) - y[i]);
   }
 
   cudaFree(y_results);
