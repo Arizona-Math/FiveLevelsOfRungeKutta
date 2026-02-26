@@ -59,9 +59,6 @@ int main()
   check_cuda(cudaMalloc(&y_results, N * sizeof(float)), "cudaMalloc y results");  
   check_cuda(cudaMalloc(&initial_conditions, N * sizeof(float)), "cudaMalloc initial conds");
 
-
-
-
   // Initialize init conditions
   for(uint32_t i=0; i < N; ++i)
     y0[i] = i;
