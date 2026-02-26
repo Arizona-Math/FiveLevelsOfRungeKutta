@@ -8,7 +8,7 @@ typedef std::pair<double, double> t_y;
 
 __device__
 float f(float t, float y) {
-    return t + y;		// Example ODE: dy/dt = -2y
+  return t + y;		// Example ODE: dy/dt = -2y
 }
 
 // Exact solution y = %e^t*y0+%e^t-t-1
@@ -20,22 +20,22 @@ float y_exact(float t, float y0) {
 
 __global__
 void rk4_kernel(float* y_results, float* initial_conditions, float h, int steps, int N) {
-    int idx = blockIdx.x * blockDim.x + threadIdx.x;
-    if (idx < N) {
-        float y = initial_conditions[idx];
-        float t = 0.0f;
+  int idx = blockIdx.x * blockDim.x + threadIdx.x;
+  if (idx < N) {
+    float y = initial_conditions[idx];
+    float t = 0.0f;
 
-        for (int i = 0; i < steps; i++) {
-            float k1 = h * f(t, y);
-            float k2 = h * f(t + 0.5f * h, y + 0.5f * k1);
-            float k3 = h * f(t + 0.5f * h, y + 0.5f * k2);
-            float k4 = h * f(t + h, y + k3);
+    for (int i = 0; i < steps; i++) {
+      float k1 = h * f(t, y);
+      float k2 = h * f(t + 0.5f * h, y + 0.5f * k1);
+      float k3 = h * f(t + 0.5f * h, y + 0.5f * k2);
+      float k4 = h * f(t + h, y + k3);
 
-            y = y + (k1 + 2.0f * k2 + 2.0f * k3 + k4) / 6.0f;
-            t += h;
-        }
-        y_results[idx] = y; // Store final result back to global memory
+      y = y + (k1 + 2.0f * k2 + 2.0f * k3 + k4) / 6.0f;
+      t += h;
     }
+    y_results[idx] = y; // Store final result back to global memory
+  }
 }
 
 /* ------------------ tiny demo harness ------------------ */
