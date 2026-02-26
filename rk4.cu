@@ -47,7 +47,10 @@ int main()
 {
   const uint32_t N = 10000000;	// Number of initial conditions (ten million)
 
-  float y[N], y0[N];		// Memory on host
+  // Memory on host
+  float *y = new float[N];
+  float *y0 = new float[N];
+
 
   const double h=.1;
   const int n_steps = std::floor(1/h);
