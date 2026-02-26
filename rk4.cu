@@ -3,16 +3,12 @@
 #include <stdint.h>
 #include <stdio.h>
 
-
-typedef std::pair<double, double> t_y;
-
-__device__
+__device__ __forceinline__
 float f(float t, float y) {
   return t + y;		// Example ODE: dy/dt = -2y
 }
 
 // Exact solution y = %e^t*y0+%e^t-t-1
-
 float y_exact(float t, float y0) {
   return std::exp(t)*y0+exp(t)-t-1;
 }
