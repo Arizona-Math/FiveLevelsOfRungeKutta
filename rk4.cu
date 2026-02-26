@@ -6,24 +6,34 @@
 
 typedef std::pair<double, double> t_y;
 
-__device__ __forceinline__
-double rk4_step(double t, double y)
-{
-  // Zero vectorfield
-  return y;
+__device__ float f(float t, float y) {
+    return t + y;		// Example ODE: dy/dt = -2y
 }
 
-__global__
-void apply_rk4(t_y* state, uint32_t dim)
-{
-  uint32_t i = blockIdx.x * blockDim.x + threadIdx.x;
-  const double h=.1;
+// Exact solution y = %e^t*y0+%e^t-t-1
 
-  if (i >= dim) return;
+float y_exact(float t, float y0) {
+  return std::exp(t)*y0+exp(t)-t-1;
+}
 
 
-  state[i].second += h*(state[i].first + state[i].second);
-  state[i].first += h;
+__global__ void rk4_kernel(float* y_results, float* initial_conditions, float h, int steps, int N) {
+    int idx = blockIdx.x * blockDim.x + threadIdx.x;
+    if (idx < N) {
+        float y = initial_conditions[idx];
+        float t = 0.0f;
+
+        for (int i = 0; i < steps; i++) {
+            float k1 = h * f(t, y);
+            float k2 = h * f(t + 0.5f * h, y + 0.5f * k1);
+            float k3 = h * f(t + 0.5f * h, y + 0.5f * k2);
+            float k4 = h * f(t + h, y + k3);
+
+            y = y + (k1 + 2.0f * k2 + 2.0f * k3 + k4) / 6.0f;
+            t += h;
+        }
+        y_results[idx] = y; // Store final result back to global memory
+    }
 }
 
 /* ------------------ tiny demo harness ------------------ */
@@ -40,36 +50,46 @@ int main()
 {
   const uint32_t N = 10000;	// Number of initial conditions
 
-  // State on host
-  t_y state[N];
+  float y[N], y0[N];		// Memory on host
 
-  for(uint32_t i = 0; i < N; ++i) {
-    state[i].first = 0;
-    state[i].second = i;
-  }
+  const double h=.1;
+  const int n_steps = std::floor(1/h);
 
-  // Allocate statevector on device
-  t_y* d_state = nullptr;
-  check_cuda(cudaMalloc(&d_state, N * sizeof(t_y)), "cudaMalloc state");
+  float* y_results = nullptr; float* initial_conditions = nullptr;
+  check_cuda(cudaMalloc(&y_results, N * sizeof(float)), "cudaMalloc y results");  
+  check_cuda(cudaMalloc(&initial_conditions, N * sizeof(float)), "cudaMalloc initial conds");
 
-  // Initialize statevector to something simple on device
-  check_cuda(cudaMemcpy(d_state, state, N * sizeof(t_y),   cudaMemcpyHostToDevice), "copy to device");
+
+
+
+  // Initialize init conditions
+  for(uint32_t i=0; i < N; ++i)
+    y0[i] = i;
+
+
+  // Copy to device
+  check_cuda(cudaMemcpy(initial_conditions, y0, N*sizeof(float), cudaMemcpyHostToDevice), "copy to device");
+
 
   // Apply kernel
   const int threads = 256;
   const int blocks = (N + threads - 1) / threads;
 
-  apply_rk4<<<blocks, threads>>>(d_state, N);
+
+  for (uint32_t i=0; i < 1/h; ++i) {
+    rk4_kernel<<<blocks, threads>>>(y_results, initial_conditions, h, n_steps, N);
+  }
   check_cuda(cudaGetLastError(), "kernel launch");
   check_cuda(cudaDeviceSynchronize(), "kernel sync");
 
   // Copy back a few entries to sanity-check
-  check_cuda(cudaMemcpy(state, d_state, N*sizeof(t_y), cudaMemcpyDeviceToHost), "copy to host");
+  check_cuda(cudaMemcpy(y, y_results, N*sizeof(float), cudaMemcpyDeviceToHost), "copy to host");
 
   for(uint32_t i=0; i < 10; ++i) {
-    printf("i=%d, ti=%g, yi=%g\n", i, state[i].first, state[i].second);
+    printf("i=%d, y0=%g, yi=%g, yi_exact=%g\n", i, y0[i], y[i], y_exact(1, y0[i]));
   }
 
-  cudaFree(d_state);
+  cudaFree(y_results);
+  cudaFree(initial_conditions);  
   return 0;
 }
