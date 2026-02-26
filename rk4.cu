@@ -52,7 +52,7 @@ int main()
   float *y0 = new float[N];
 
 
-  const double h=.1;
+  const float h=.1;
   const int n_steps = std::floor(1/h);
 
   float* y_results = nullptr; float* initial_conditions = nullptr;
