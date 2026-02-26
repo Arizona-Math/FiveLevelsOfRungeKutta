@@ -39,7 +39,7 @@ int main()
   float *y = new float[N];
   float *y0 = new float[N];
 
-  const double h=.1;
+  const float h=.1;
   const int n_steps = std::floor(1/h);
 
 
@@ -56,6 +56,7 @@ int main()
 	   i, y0[i], y[i], y_exact(1, y0[i]), y_exact(1,y0[i]) - y[i]);
   }
 
-
+  delete[] y;
+  delete[] y0;
   return 0;
 }
