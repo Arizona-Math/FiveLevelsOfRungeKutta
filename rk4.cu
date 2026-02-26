@@ -1,5 +1,4 @@
 #include <cuda_runtime.h>
-#include <cuComplex.h>
 #include <stdint.h>
 #include <stdio.h>
 
@@ -46,7 +45,7 @@ static void check_cuda(cudaError_t e, const char* msg)
 
 int main()
 {
-  const uint32_t N = 10000;	// Number of initial conditions
+  const uint32_t N = 1000000;	// Number of initial conditions
 
   float y[N], y0[N];		// Memory on host
 
@@ -74,9 +73,8 @@ int main()
   const int blocks = (N + threads - 1) / threads;
 
 
-  for (uint32_t i=0; i < 1/h; ++i) {
-    rk4_kernel<<<blocks, threads>>>(y_results, initial_conditions, h, n_steps, N);
-  }
+  rk4_kernel<<<blocks, threads>>>(y_results, initial_conditions, h, n_steps, N);
+
   check_cuda(cudaGetLastError(), "kernel launch");
   check_cuda(cudaDeviceSynchronize(), "kernel sync");
 
