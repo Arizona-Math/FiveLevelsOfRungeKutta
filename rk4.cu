@@ -64,7 +64,7 @@ int main()
   check_cuda(cudaDeviceSynchronize(), "kernel sync");
 
   // Copy back a few entries to sanity-check
-  check_cuda(cudaMemcpy(state, d_state, sizeof(double), cudaMemcpyDeviceToHost), "copy to host");
+  check_cuda(cudaMemcpy(state, d_state, N*sizeof(t_y), cudaMemcpyDeviceToHost), "copy to host");
 
   for(uint32_t i=0; i < 10; ++i) {
     printf("i=%d, ti=%g, yi=%g\n", i, state[i].first, state[i].second);
