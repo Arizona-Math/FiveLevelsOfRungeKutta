@@ -86,7 +86,13 @@ int main()
 	   i, y0[i], y[i], y_exact(1, y0[i]), y_exact(1,y0[i]) - y[i]);
   }
 
+  // Free memory on device
   cudaFree(y_results);
   cudaFree(initial_conditions);  
+
+  // Free memory on host
+  delete[] y;
+  delete[] y0;
+
   return 0;
 }
