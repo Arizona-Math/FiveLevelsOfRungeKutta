@@ -16,8 +16,8 @@ double rk4_step(double t, double y)
 __global__
 void apply_rk4(t_y* state, uint32_t dim)
 {
-  const double h=1e-4;
   uint32_t i = blockIdx.x * blockDim.x + threadIdx.x;
+  const double h=.1;
 
   if (i >= dim) return;
   state[i].second = rk4_step(state[i].first, state[i].second);
