@@ -22,12 +22,16 @@ rk4_no_cuda_omp: rk4_no_cuda_omp.cpp
 rk4_mpi: rk4_mpi.cpp
 	mpic++ -O3 -std=c++17 rk4_mpi.cpp -o rk4_mpi
 
-
 run: $(PROGS)
+	echo '----------------------------------------------------------------'
 	time python ./rk4.py >/dev/null
+	echo '----------------------------------------------------------------'
 	time ./rk4_no_cuda >/dev/null
+	echo '----------------------------------------------------------------'
 	time ./rk4_no_cuda_omp >/dev/null
+	echo '----------------------------------------------------------------'
 	time mpirun -np 10 ./rk4_mpi >/dev/null
+	echo '----------------------------------------------------------------'
 	time ./rk4 >/dev/null
 
 
