@@ -23,17 +23,11 @@ rk4_mpi: rk4_mpi.cpp
 	mpic++ -O3 -std=c++17 rk4_mpi.cpp -o rk4_mpi
 
 run: $(PROGS)
-	echo '--------------------------Pure Python ----------------------'
-	time python ./rk4.py >/dev/null
-	echo '--------------------------C++ code / single thread----------'
-	time ./rk4_no_cuda >/dev/null
-	echo '--------------------------C++ code / Open MP ---------------'
-	time ./rk4_no_cuda_omp >/dev/null
-	echo '--------------------------C++ code / Open MPI --------------'
-	time mpirun -np 10 ./rk4_mpi >/dev/null
-	echo '--------------------------CUDA C++ code / GPU---------------'
-	time ./rk4 >/dev/null
-
+	(echo '==== Pure Python ===='; time python ./rk4.py >/dev/null)
+	(echo '==== C++ code / single thread ==== '; time ./rk4_no_cuda >/dev/null)
+	(echo '==== C++ code / Open MP ===='; time ./rk4_no_cuda_omp >/dev/null)
+	(echo '==== C++ code / Open MPI ===='; time mpirun -np 10 ./rk4_mpi >/dev/null)
+	(echo '==== CUDA C++ code / GPU ===='; time ./rk4 >/dev/null)
 
 clean:
 	rm $(PROGS)
