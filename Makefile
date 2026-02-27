@@ -24,11 +24,11 @@ rk4_mpi: rk4_mpi.cpp
 
 
 run: $(PROGS)
-	time python ./rk4.py
-	time ./rk4_no_cuda
-	time ./rk4_no_cuda_omp
-	time mpirun -np 10 ./rk4_mpi
-	time ./rk4
+	time python ./rk4.py >/dev/null
+	time ./rk4_no_cuda >/dev/null
+	time ./rk4_no_cuda_omp >/dev/null
+	time mpirun -np 10 ./rk4_mpi >/dev/null
+	time ./rk4 >/dev/null
 
 
 clean:
