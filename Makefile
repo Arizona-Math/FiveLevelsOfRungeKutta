@@ -2,7 +2,7 @@ CFLAGS=-g -ggdb3 -Wall -Wextra -pedantic
 LDFLAGS=-lgmp
 NVCCFLAGS=-O3 -std=c++17 -ccbin /usr/bin/g++-13
 
-PROGS = rk4 rk4_no_cuda rk4_no_cuda_omp
+PROGS = rk4 rk4_no_cuda rk4_no_cuda_omp rk4_mpi
 
 all: $(PROGS)
 
@@ -15,7 +15,13 @@ rk4_no_cuda: rk4_no_cuda.cpp
 	$(CXX) $(CXXFLAGS) $< -o $@
 
 rk4_no_cuda_omp: rk4_no_cuda_omp.cpp
-	$(CXX) -omp $(CXXFLAGS) $< -o $@
+	$(CXX) -fopenmp $(CXXFLAGS) $< -o $@
+
+# Run MPI version like this:
+# mpirun -np 4 ./rk4_mpi
+rk4_mpi: rk4_mpi.cpp
+	mpic++ -O3 -std=c++17 rk4_mpi.cpp -o rk4_mpi
+
 
 
 clean:
