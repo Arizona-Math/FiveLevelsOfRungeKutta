@@ -23,6 +23,13 @@ rk4_mpi: rk4_mpi.cpp
 	mpic++ -O3 -std=c++17 rk4_mpi.cpp -o rk4_mpi
 
 
+run: $(PROGS)
+	time python ./rk4.py
+	time ./rk4_no_cuda
+	time ./rk4_no_cuda_omp
+	time mpirun -np 10 ./rk4_mpi
+	time ./rk4
+
 
 clean:
 	rm $(PROGS)
