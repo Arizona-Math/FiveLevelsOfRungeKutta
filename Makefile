@@ -1,4 +1,6 @@
+# These are flags for host code only (not GPU)
 CXXFLAGS=-g -ggdb3 -Wall -Wextra -pedantic
+
 LDFLAGS=-lgmp
 # Uncomment this if you want optimized code
 #NVCCFLAGS=-O3 -std=c++17 -ccbin /usr/bin/g++-13
