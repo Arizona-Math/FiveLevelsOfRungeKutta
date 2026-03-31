@@ -8,8 +8,9 @@ CXXFLAGS=-g -ggdb3 -Wall -Wextra -pedantic
 # No good for debugging.
 #CXXFLAGS=-O3 -Wall -Wextra -pedantic
 
-
+# Linker flags to enable OpenMP on some older systems
 LDFLAGS=-lgmp
+
 # Uncomment this if you want optimized code
 #NVCCFLAGS=-O3 -std=c++17 -ccbin /usr/bin/g++-13
 
