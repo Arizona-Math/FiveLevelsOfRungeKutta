@@ -9,6 +9,7 @@ CXXFLAGS=-g -ggdb3 -Wall -Wextra -pedantic
 #CXXFLAGS=-O3 -Wall -Wextra -pedantic
 
 # Linker flags to enable OpenMP on some older systems
+# Unused in this file
 LDFLAGS=-lgmp
 
 # Uncomment this if you want optimized code
