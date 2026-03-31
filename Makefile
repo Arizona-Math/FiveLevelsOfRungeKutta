@@ -5,7 +5,7 @@
 CXXFLAGS=-g -ggdb3 -Wall -Wextra -pedantic
 
 # Uncomment this if you want optimized host C++ executable.
-# Not good for debugging.
+# No good for debugging.
 #CXXFLAGS=-O3 -Wall -Wextra -pedantic
 
 
