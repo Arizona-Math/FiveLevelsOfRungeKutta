@@ -1,4 +1,4 @@
-CFLAGS=-g -ggdb3 -Wall -Wextra -pedantic
+CXXFLAGS=-g -ggdb3 -Wall -Wextra -pedantic
 LDFLAGS=-lgmp
 NVCCFLAGS=-O3 -std=c++17 -ccbin /usr/bin/g++-13
 
