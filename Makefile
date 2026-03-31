@@ -12,6 +12,12 @@ CXXFLAGS=-g -ggdb3 -Wall -Wextra -pedantic
 # Unused in this file
 LDFLAGS=-lgmp
 
+# NOTE: Below you have option "/usr/bin/g++-13"
+# This specifies the version of g++ to be used
+# to compile host code under NVCC (NVIDIA C Compiler)
+# It is very important to match it with your
+# OS and available compiler.
+
 # Uncomment this if you want optimized code
 #NVCCFLAGS=-O3 -std=c++17 -ccbin /usr/bin/g++-13
 
