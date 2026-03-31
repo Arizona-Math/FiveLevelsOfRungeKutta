@@ -1,7 +1,7 @@
 CXXFLAGS=-g -ggdb3 -Wall -Wextra -pedantic
 LDFLAGS=-lgmp
 #NVCCFLAGS=-O3 -std=c++17 -ccbin /usr/bin/g++-13
-NVCCFLAGS=-g -G -std=c++17 -ccbin /usr/bin/g++-13
+NVCCFLAGS=-g -G -Wall -Wextra -pedantic -std=c++17 -ccbin /usr/bin/g++-13
 
 PROGS = rk4 rk4_no_cuda rk4_no_cuda_omp rk4_mpi
 
