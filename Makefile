@@ -1,7 +1,11 @@
 CXXFLAGS=-g -ggdb3 -Wall -Wextra -pedantic
 LDFLAGS=-lgmp
+# Uncomment this if you want optimized code
 #NVCCFLAGS=-O3 -std=c++17 -ccbin /usr/bin/g++-13
-NVCCFLAGS=-g -G -Wall -Wextra -pedantic -std=c++17 -ccbin /usr/bin/g++-13
+
+# Uncomment this if you want to debug the code
+# NOTE: Use cuda-gdb as the debugger on Linux or HPC
+NVCCFLAGS=-g -G -O0 -std=c++17 -ccbin /usr/bin/g++-13
 
 PROGS = rk4 rk4_no_cuda rk4_no_cuda_omp rk4_mpi
 
