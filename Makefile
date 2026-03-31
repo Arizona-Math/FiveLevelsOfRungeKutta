@@ -14,7 +14,7 @@ LDFLAGS=-lgmp
 
 # NOTE: Below you have option "-ccbin /usr/bin/g++-13"
 # This points to the binary of the G++ compiler to be used
-# to compile host code under NVCC (NVIDIA C Compiler)
+# to compile host code under NVCC (NVIDIA C/C++ Compiler)
 # It is very important to match it with your
 # OS and available compiler.
 
