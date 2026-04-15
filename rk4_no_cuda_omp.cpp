@@ -38,7 +38,7 @@ int main()
 {
   omp_set_num_threads(10);
 
-  const uint32_t N = 10000000;	// Number of initial conditions (ten million)
+  const uint32_t N = 1000000000;	// Number of initial conditions (ten million)
 
   float *y = new float[N];
   float *y0 = new float[N];
